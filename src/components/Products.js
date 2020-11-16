@@ -13,10 +13,16 @@ class Products extends Component {
                   <img src={product.image} alt={product.title}></img>
                   <p>{product.title}</p>
                 </a>
-              </div>
-              <div className="product-price">
-                <div className="price">{formatCurrency(product.price)}</div>
-                <button className="button button-primary">Add To Cart</button>
+
+                <div className="product-price">
+                  <div className="price">{formatCurrency(product.price)}</div>
+                  <button
+                    className="button button-primary"
+                    onClick={() => this.props.addToCart(product)}
+                  >
+                    Add To Cart
+                  </button>
+                </div>
               </div>
             </li>
           ))}
