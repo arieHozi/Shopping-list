@@ -3,6 +3,7 @@ import React from "react";
 import data from "./data.json";
 import Products from "./components/Products";
 import Filter from "./components/Filter";
+import Cart from "./components/Cart";
 
 class App extends React.Component {
   constructor() {
@@ -11,6 +12,7 @@ class App extends React.Component {
       products: data.products,
       size: "",
       sort: "",
+      cartitems: [],
     };
   }
 
@@ -33,7 +35,6 @@ class App extends React.Component {
             : -1 //sort by newest
       ),
     }));
-    console.log(e.target.value);
   };
   filterProducts = (e) => {
     if (e.target.value === "") {
@@ -46,6 +47,34 @@ class App extends React.Component {
         ),
       });
     }
+  };
+  removeFromCart = (product) => {
+    console.log("product", product._id);
+
+    const cartitems = this.state.cartitems.slice();
+    this.setState({
+      cartitems: cartitems.filter((item) => item._id !== product._id),
+    });
+  };
+  addToCart = (product) => {
+    let alreadtInCart = false;
+    const cartitems = this.state.cartitems.slice();
+    cartitems.forEach((item) => {
+      if (item._id === product._id) {
+        item.count++;
+
+        alreadtInCart = true;
+      }
+    });
+    if (!alreadtInCart) {
+      cartitems.push({
+        ...product,
+        count: 1,
+      });
+    }
+    this.setState({
+      cartitems,
+    });
   };
   render() {
     return (
@@ -63,9 +92,17 @@ class App extends React.Component {
                 filterProducts={this.filterProducts}
                 sortProducts={this.sortProducts}
               />
-              <Products products={this.state.products} />
+              <Products
+                products={this.state.products}
+                addToCart={this.addToCart}
+              />
             </div>
-            <div className="sidebar">cart items</div>
+            <div className="sidebar">
+              <Cart
+                cartitems={this.state.cartitems}
+                removeFromCart={this.removeFromCart}
+              />
+            </div>
           </div>
         </main>
         <footer>All right is reserved.</footer>
