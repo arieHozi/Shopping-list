@@ -12,7 +12,9 @@ class App extends React.Component {
       products: data.products,
       size: "",
       sort: "",
-      cartitems: [],
+      cartitems: localStorage.getItem("cartitem")
+        ? JSON.parse(localStorage.getItem("cartitem"))
+        : [],
     };
   }
 
@@ -55,6 +57,10 @@ class App extends React.Component {
     this.setState({
       cartitems: cartitems.filter((item) => item._id !== product._id),
     });
+    localStorage.setItem(
+      "cartitem",
+      JSON.stringify(cartitems.filter((item) => item._id !== product._id))
+    );
   };
   addToCart = (product) => {
     let alreadtInCart = false;
@@ -75,6 +81,10 @@ class App extends React.Component {
     this.setState({
       cartitems,
     });
+    localStorage.setItem("cartitem", JSON.stringify(cartitems));
+  };
+  cretaeOrder = (order) => {
+    alert("Need to save order for " + order.name);
   };
   render() {
     return (
@@ -101,6 +111,7 @@ class App extends React.Component {
               <Cart
                 cartitems={this.state.cartitems}
                 removeFromCart={this.removeFromCart}
+                cretaeOrder={this.cretaeOrder}
               />
             </div>
           </div>
