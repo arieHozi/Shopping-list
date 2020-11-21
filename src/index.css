@@ -206,3 +206,33 @@ input {
 
   border: 0.1rem #c0c0c0 solid;
 }
+/*product details*/
+.product-details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-height: 96vh;
+}
+.product-details img {
+  max-height: 100vh;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+.product-details-des {
+  flex: 1 1;
+  margin: 1rem;
+}
+.product-price {
+  display: flex;
+  justify-content: space-between;
+}
+.close-model {
+  position: absolute;
+  right: 1rem;
+  top: 2.5rem;
+  z-index: 1000;
+}
+.product-price {
+  display: flex;
+  justify-content: space-around;
+}
