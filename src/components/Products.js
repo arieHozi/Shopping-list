@@ -72,18 +72,16 @@ class Products extends Component {
                     ))}
                   </p>
                   <div className="product-price">
-                    <div>
-                      {formatCurrency(product.price)}
-                      <button
-                        className="button-primary"
-                        onClick={() => {
-                          this.props.addToCart(product);
-                          this.closeModel();
-                        }}
-                      >
-                        Add Cart
-                      </button>
-                    </div>
+                    <div> Price: {formatCurrency(product.price)}</div>
+                    <button
+                      className="button-primary"
+                      onClick={() => {
+                        this.props.addToCart(product);
+                        this.closeModel();
+                      }}
+                    >
+                      Add Cart
+                    </button>
                   </div>
                 </div>
               </div>

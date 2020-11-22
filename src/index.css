@@ -224,8 +224,9 @@ input {
 }
 .product-price {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
+
 .close-model {
   position: absolute;
   right: 1rem;
