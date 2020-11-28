@@ -14,15 +14,13 @@ class Products extends Component {
       product: null,
     };
   }
-
   componentDidMount() {
     this.props.fetchProducts();
   }
-
-  openModel = (product) => {
+  openModal = (product) => {
     this.setState({ product });
   };
-  closeModel = () => {
+  closeModal = () => {
     this.setState({ product: null });
   };
   render() {
@@ -31,7 +29,7 @@ class Products extends Component {
       <div>
         <Fade bottom cascade>
           {!this.props.products ? (
-            <div class="loader">Loading...</div>
+            <div>Loading...</div>
           ) : (
             <ul className="products">
               {this.props.products.map((product) => (
@@ -39,19 +37,16 @@ class Products extends Component {
                   <div className="product">
                     <a
                       href={"#" + product._id}
-                      onClick={() => this.openModel(product)}
+                      onClick={() => this.openModal(product)}
                     >
                       <img src={product.image} alt={product.title}></img>
                       <p>{product.title}</p>
                     </a>
-
                     <div className="product-price">
-                      <div className="price">
-                        {formatCurrency(product.price)}
-                      </div>
+                      <div>{formatCurrency(product.price)}</div>
                       <button
-                        className="button button-primary"
                         onClick={() => this.props.addToCart(product)}
+                        className="button primary"
                       >
                         Add To Cart
                       </button>
@@ -63,36 +58,37 @@ class Products extends Component {
           )}
         </Fade>
         {product && (
-          <Modal isOpen={true} onRequestClose={this.closeModel}>
+          <Modal isOpen={true} onRequestClose={this.closeModal}>
             <Zoom>
-              <button className="close-model" onClick={this.closeModel}>
-                X
+              <button className="close-modal" onClick={this.closeModal}>
+                x
               </button>
               <div className="product-details">
-                <img src={product.image} alt={product.title} />
-                <div className="product-details-des">
+                <img src={product.image} alt={product.title}></img>
+                <div className="product-details-description">
                   <p>
                     <strong>{product.title}</strong>
                   </p>
                   <p>{product.description}</p>
                   <p>
-                    Available sizes:{" "}
-                    {product.availableSizes.map((item) => (
+                    Avaiable Sizes:{" "}
+                    {product.availableSizes.map((x) => (
                       <span>
-                        <button className="button">{item}</button>
+                        {" "}
+                        <button className="button">{x}</button>
                       </span>
                     ))}
                   </p>
                   <div className="product-price">
-                    <div> Price: {formatCurrency(product.price)}</div>
+                    <div>{formatCurrency(product.price)}</div>
                     <button
-                      className="button-primary"
+                      className="button primary"
                       onClick={() => {
                         this.props.addToCart(product);
-                        this.closeModel();
+                        this.closeModal();
                       }}
                     >
-                      Add Cart
+                      Add To Cart
                     </button>
                   </div>
                 </div>
@@ -104,8 +100,10 @@ class Products extends Component {
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  products: state.products.items,
-});
-export default connect(mapStateToProps, { fetchProducts })(Products);
+export default connect(
+  (state) => ({ products: state.products.filteredItems }),
+  {
+    fetchProducts,
+    //addToCart,
+  }
+)(Products);
