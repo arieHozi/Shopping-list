@@ -38,6 +38,8 @@ const Product = mongoose.model(
   })
 );
 app.get("/api/products", async (req, res) => {
+  console.log("got hehre");
+
   const products = await Product.find({});
   res.send(products);
 });
