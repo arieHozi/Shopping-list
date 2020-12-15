@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import formatCurrency from "../util";
 import Fade from "react-reveal/Fade";
+import { connect } from "react-redux";
+import { removeFromCart } from "../actions/cartActions";
 
-export default class Cart extends Component {
+class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,22 +30,22 @@ export default class Cart extends Component {
     this.props.cretaeOrder(order);
   };
   render() {
-    const { cartitems } = this.props;
+    const { cartItems } = this.props;
 
     return (
       <div>
-        {cartitems.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="cart cart-header">Cart is empty</div>
         ) : (
           <div className="cart cart-header">
-            You have {cartitems.length} in the cart
+            You have {cartItems.length} in the cart
           </div>
         )}
         <div>
           <div className="cart">
             <Fade left cascade>
               <ul className="cart-items">
-                {cartitems.map((item) => (
+                {cartItems.map((item) => (
                   <li key={item._id}>
                     <div>
                       <img src={item.image} alt={item.title} />
@@ -66,14 +68,14 @@ export default class Cart extends Component {
               </ul>
             </Fade>
           </div>
-          {cartitems.length !== 0 && (
+          {cartItems.length !== 0 && (
             <div>
               <div className={"cart"}>
                 <div className="total">
                   <div>
                     Total:{"  "}
                     {formatCurrency(
-                      cartitems.reduce(
+                      cartItems.reduce(
                         (total, item) => total + item.price * item.count,
                         0
                       )
@@ -136,3 +138,10 @@ export default class Cart extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  //select what part of the state you want to map to Cart propertis
+  return {
+    cartItems: state.cart.cartItems, //cart is the reducer name on combine method and cartItems is part of the state as declered in the reducer
+  };
+};
+export default connect(mapStateToProps, { removeFromCart })(Cart);
